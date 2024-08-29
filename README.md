@@ -1,124 +1,117 @@
-# Spring Security JWT Authentication Project
+Here's the English translation of the provided text:
 
-Este projeto é um exemplo de aplicação Spring Boot que utiliza autenticação JWT (JSON Web Token) para proteger endpoints.
+"Spring Security JWT Authentication Project
 
-## Estrutura do Projeto
+This project is an example of a Spring Boot application that uses JWT (JSON Web Token) authentication to protect endpoints.
 
-- **src/main/java/com/Spring/Security**
-  - **Application.java**: Classe principal para iniciar a aplicação.
-  - **controller**
-    - **AuthenticationController.java**: Controlador para endpoints de autenticação e registro.
-    - **DemoController.java**: Controlador para endpoints de demonstração (protegidos e não protegidos).
-  - **config**
-    - **WebSecurityConfig.java**: Configuração de segurança do Spring Security.
-  - **filter**
-    - **JwtAuthenticationFilter.java**: Filtro para processar tokens JWT.
-  - **dto/request**
-    - **AuthenticationRequest.java**: DTO para requisições de autenticação.
-    - **RegisterRequest.java**: DTO para requisições de registro.
-  - **dto/response**
-    - **AuthenticationResponse.java**: DTO para respostas de autenticação.
-  - **service**
-    - **AuthenticationService.java**: Serviço para lógica de autenticação e registro.
-    - **JwtService.java**: Serviço para manipulação de tokens JWT.
-    - **UserDetailsService.java**: Serviço para carregar detalhes do usuário.
+Project Structure
+* **src/main/java/com/Spring/Security**
+   * **Application.java**: Main class to start the application.
+   * **controller**
+      * **AuthenticationController.java**: Controller for authentication and registration endpoints.
+      * **DemoController.java**: Controller for demonstration endpoints (protected and unprotected).
+   * **config**
+      * **WebSecurityConfig.java**: Spring Security configuration.
+   * **filter**
+      * **JwtAuthenticationFilter.java**: Filter to process JWT tokens.
+   * **dto/request**
+      * **AuthenticationRequest.java**: DTO for authentication requests.
+      * **RegisterRequest.java**: DTO for registration requests.
+   * **dto/response**
+      * **AuthenticationResponse.java**: DTO for authentication responses.
+   * **service**
+      * **AuthenticationService.java**: Service for authentication and registration logic.
+      * **JwtService.java**: Service for JWT token manipulation.
+      * **UserDetailsService.java**: Service to load user details.
 
-## Endpoints
+Endpoints
+Authentication and Registration
+* **Register a new user**
+   * URL: `POST /api/v1/auth/register`
+   * Request Body:
 
-### Autenticação e Registro
+```
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
 
-- **Registrar um novo usuário**
-  - URL: `POST /api/v1/auth/register`
-  - Corpo da Requisição:
-    ```json
-    {
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "john.doe@example.com",
-      "password": "password123"
-    }
-    ```
+* **Authenticate a user (login)**
+   * URL: `POST /api/v1/auth/authenticate`
+   * Request Body:
 
-- **Autenticar um usuário (login)**
-  - URL: `POST /api/v1/auth/authenticate`
-  - Corpo da Requisição:
-    ```json
-    {
-      "email": "john.doe@example.com",
-      "password": "password123"
-    }
-    ```
+```
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
 
-### Endpoints de Demonstração
+Demonstration Endpoints
+* **Unsecured endpoint**
+   * URL: `GET /api/v1/demo/unsecured`
+   * Response: `"This endpoint is not secured"`
+* **Secured endpoint for users with ROLE_USER**
+   * URL: `GET /api/v1/demo/secured-user`
+   * Requires JWT token in the `Authorization` header
+   * Response: `"This endpoint is secured and can be accessed by ROLE_USER."`
+* **Secured endpoint for users with ROLE_ADMIN**
+   * URL: `GET /api/v1/demo/secured-admin`
+   * Requires JWT token in the `Authorization` header
+   * Response: `"This endpoint is secured and can be accessed by ROLE_ADMIN."`
 
-- **Endpoint não seguro**
-  - URL: `GET /api/v1/demo/unsecured`
-  - Resposta: `"This endpoint is not secured"`
+How to Run the Project
+1. **Clone the repository**:
 
-- **Endpoint seguro para usuários com ROLE_USER**
-  - URL: `GET /api/v1/demo/secured-user`
-  - Requer token JWT no cabeçalho `Authorization`
-  - Resposta: `"This endpoint is secured and can be accessed by ROLE_USER."`
+```
+git clone <REPOSITORY_URL>
+cd <DIRECTORY_NAME>
+```
 
-- **Endpoint seguro para usuários com ROLE_ADMIN**
-  - URL: `GET /api/v1/demo/secured-admin`
-  - Requer token JWT no cabeçalho `Authorization`
-  - Resposta: `"This endpoint is secured and can be accessed by ROLE_ADMIN."`
-
-## Como Rodar o Projeto
-
-1. **Clone o repositório**:
-   ```sh
-   git clone <URL_DO_REPOSITORIO>
-   cd <NOME_DO_DIRETORIO>
-Copy
-Insert
-
-Compile e rode a aplicação:
+2. Compile and run the application:
+```
 ./mvnw spring-boot:run
-Copy
-Insert
+```
 
-Acesse a aplicação:
-A aplicação estará disponível em http://localhost:8080.
-Como Usar o curl para Testar Endpoints
-Registrar um Novo Usuário
-curl -X POST http://localhost:8080/api/v1/auth/register \
--H "Content-Type: application/json" \
--d '{
+3. Access the application: The application will be available at http://localhost:8080.
+
+How to Use curl to Test Endpoints
+Register a New User
+```
+curl -X POST http://localhost:8080/api/v1/auth/register -H "Content-Type: application/json" -d '{
   "firstName": "John",
   "lastName": "Doe",
   "email": "john.doe@example.com",
   "password": "password123"
 }'
-Copy
-Insert
+```
 
-Autenticar um Usuário (Login)
-curl -X POST http://localhost:8080/api/v1/auth/authenticate \
--H "Content-Type: application/json" \
--d '{
+Authenticate a User (Login)
+```
+curl -X POST http://localhost:8080/api/v1/auth/authenticate -H "Content-Type: application/json" -d '{
   "email": "john.doe@example.com",
   "password": "password123"
 }'
-Copy
-Insert
+```
 
-Acessar um Endpoint Protegido
-curl -X GET http://localhost:8080/api/v1/demo/secured-user \
--H "Authorization: Bearer <TOKEN_JWT>"
-Copy
-Insert
+Access a Protected Endpoint
+```
+curl -X GET http://localhost:8080/api/v1/demo/secured-user -H "Authorization: Bearer <JWT_TOKEN>"
+```
 
-Tecnologias Utilizadas
-Java 11
-Spring Boot
-Spring Security
-JWT (JSON Web Token)
-Maven
-Contribuição
-Faça um fork do projeto.
-Crie uma branch para sua feature (git checkout -b feature/fooBar).
-Commit suas mudanças (git commit -am 'Add some fooBar').
-Push para a branch (git push origin feature/fooBar).
-Crie um novo Pull Request.
+Technologies Used
+- Java 11
+- Spring Boot
+- Spring Security
+- JWT (JSON Web Token)
+- Maven
+
+Contribution
+1. Fork the project.
+2. Create a branch for your feature (git checkout -b feature/fooBar).
+3. Commit your changes (git commit -am 'Add some fooBar').
+4. Push to the branch (git push origin feature/fooBar).
+5. Create a new Pull Request."
